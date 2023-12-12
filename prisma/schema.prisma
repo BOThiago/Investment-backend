@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id      Int              @id @default(autoincrement())
+  company String
+  fundos  Realestatefund[]
+}
+
+model Sector {
+  id         Int              @id @default(autoincrement())
+  sector     String
+  fundos     Realestatefund[]
+  Refhistory Refhistory[]
+}
+
+model Subsector {
+  id         Int              @id @default(autoincrement())
+  subsector  String
+  fundos     Realestatefund[]
+  Refhistory Refhistory[]
+}
+
+model Segment {
+  id         Int              @id @default(autoincrement())
+  segment    String
+  fundos     Realestatefund[]
+  Refhistory Refhistory[]
+}
+
+model Realestatefund {
+  id                     Int          @id @default(autoincrement())
+  company_id             Int
+  company                Company      @relation(fields: [company_id], references: [id])
+  ticker                 String
+  price                  Decimal      @db.Decimal(10, 2)
+  sector_id              Int
+  sector                 Sector       @relation(fields: [sector_id], references: [id])
+  subsector_id           Int
+  subsector              Subsector    @relation(fields: [subsector_id], references: [id])
+  segment_id             Int
+  segment                Segment      @relation(fields: [segment_id], references: [id])
+  management             Int
+  management_f           String
+  dividend_yeld          Decimal      @db.Decimal(6, 4)
+  p_vp                   Decimal      @db.Decimal(6, 4)
+  equity_share_value     Decimal      @db.Decimal(10, 2)
+  avg_daily_liquidity    Decimal      @db.Decimal(15, 2)
+  cash_percentage        Decimal      @db.Decimal(6, 4)
+  dividend_cagr          Decimal      @db.Decimal(6, 4)
+  share_cagr             Decimal      @db.Decimal(6, 4)
+  number_of_shareholders Decimal      @db.Decimal(10, 2)
+  share_quantity         Decimal      @db.Decimal(10, 2)
+  patrimony              Decimal      @db.Decimal(15, 2)
+  last_dividend          Decimal      @db.Decimal(10, 2)
+  Refhistory             Refhistory[]
+}
+
+model Refhistory {
+  id                     Int            @id @default(autoincrement())
+  realstatefund_id       Int
+  realstatefund          Realestatefund @relation(fields: [realstatefund_id], references: [id])
+  ticker                 String
+  price                  Decimal        @db.Decimal(10, 2)
+  sector_id              Int
+  sector                 Sector         @relation(fields: [sector_id], references: [id])
+  subsector_id           Int
+  subsector              Subsector      @relation(fields: [subsector_id], references: [id])
+  segment_id             Int
+  segment                Segment        @relation(fields: [segment_id], references: [id])
+  management             Int
+  management_f           String
+  dividend_yeld          Decimal        @db.Decimal(6, 4)
+  p_vp                   Decimal        @db.Decimal(6, 4)
+  equity_share_value     Decimal        @db.Decimal(10, 2)
+  avg_daily_liquidity    Decimal        @db.Decimal(15, 2)
+  cash_percentage        Decimal        @db.Decimal(6, 4)
+  dividend_cagr          Decimal        @db.Decimal(6, 4)
+  share_cagr             Decimal        @db.Decimal(6, 4)
+  number_of_shareholders Decimal        @db.Decimal(10, 2)
+  share_quantity         Decimal        @db.Decimal(10, 2)
+  patrimony              Decimal        @db.Decimal(15, 2)
+  last_dividend          Decimal        @db.Decimal(10, 2)
+  created_at             DateTime       @default(now())
+}
