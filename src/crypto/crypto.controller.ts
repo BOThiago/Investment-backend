@@ -1,6 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { CryptoService } from './crypto.service';
-import axios from 'axios';
 
 @Controller({ path: 'crypto' })
 export class CryptoController {
@@ -19,5 +18,10 @@ export class CryptoController {
   @Get('weekly/fibonacci')
   async fibonacciHystoryBySymbol(@Query('symbol') symbol: string) {
     return await this.cryptoService.fibonacciHystoryBySymbol(symbol);
+  }
+
+  @Get('CVD')
+  async calculateCVDBySymbol(@Query('symbol') symbol: string) {
+    return await this.cryptoService.calculateCVDBySymbol(symbol);
   }
 }

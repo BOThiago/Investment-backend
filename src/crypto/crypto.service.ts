@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { config } from 'process';
 
 @Injectable()
 export class CryptoService {
@@ -95,5 +94,24 @@ export class CryptoService {
     }));
 
     return { symbol, maxPrice, minPrice, fibonacciLevels };
+  }
+
+  async calculateCVDBySymbol(symbol: string): Promise<any> {
+    const priceHistory = await this.getSymbolPriceHistory(symbol);
+
+    console.log(priceHistory);
+
+    const closingPrices = priceHistory.map((item) => parseFloat(item[4]));
+
+    const volumes = priceHistory.map((item) => parseFloat(item[8]));
+
+    // Calcular o CVD (Cumulative Volume Delta)
+    const cvd = volumes.reduce((acc, volume, index) => {
+      const delta =
+        index === 0 ? 0 : closingPrices[index] - closingPrices[index - 1];
+      return acc + delta * volume;
+    }, 0);
+
+    return { symbol, cvd };
   }
 }

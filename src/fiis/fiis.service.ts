@@ -16,9 +16,10 @@ export class FiisService {
 
     return axios
       .request(config)
-      .then((response) => response.data)
+      .then((response) => response.data.list)
       .catch((error) => console.log(error));
   }
+  
   async getFiisToday() {
     const config = {
       method: 'get',
@@ -35,5 +36,32 @@ export class FiisService {
       .then((response) => response.data)
       .catch((error) => console.log(error));
   }
+
+  async applyFilters(fiis: any[], filters: { p_vp?: number; segment?: string; p_vpmin?: number; dy?: number }) {
+    return fiis.filter((fii) => {
+      let passFilters = true;
+  
+      // Aplicar filtro para p_vp
+      if (filters.p_vp !== undefined) {
+        passFilters = passFilters && fii.p_vp >= filters.p_vp;
+      }
+  
+      if (filters.p_vpmin !== undefined && filters.p_vp !== undefined) {
+        passFilters = passFilters && fii.p_vp <= filters.p_vp && fii.p_vp >= filters.p_vpmin;
+      }
+  
+      // Aplicar filtro para dy
+      if (filters.dy !== undefined) {
+        passFilters = passFilters && fii.dy > filters.dy;
+      }
+  
+      // Aplicar filtro para segment
+      if (filters.segment && fii.segment !== filters.segment) {
+        passFilters = false;
+      }
+  
+      return passFilters;
+    });
+  }  
   
 }
