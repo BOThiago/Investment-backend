@@ -15,8 +15,7 @@ export class FiisController {
     const fiis = await this.fissService.getFiis();
     return this.fissService.applyFilters(fiis, { p_vp, segment, p_vpmin, dy });
   }
-  
-  
+
   @Get('today')
   async getFiisToday() {
     return await this.fissService.getFiisToday();
