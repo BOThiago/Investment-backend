@@ -34,6 +34,54 @@ model Segment {
   Refhistory Refhistory[]
 }
 
+model User {
+  id    Int      @id @default(autoincrement())
+  name            String
+  email           String   @unique
+  password        String
+  transactions    Transaction[]
+  debts           Debt[]
+  savingsGoals    SavingsGoal[]
+}
+
+model Categories {
+  id Int      @id @default(autoincrement())
+  name            String
+  description     String?
+  transactions    Transaction[]
+}
+
+model Transaction {
+  id Int      @id @default(autoincrement())
+  type            String
+  amount          Decimal
+  transaction_date DateTime
+  description     String?
+  user_id  Int
+  user            User     @relation(fields: [user_id], references: [user_id])
+  category_id  Int
+  categories        Categories  @relation(fields: [category_id], references: [category_id])
+}
+
+model Debt {
+  id Int      @id @default(autoincrement())
+  amount          Decimal
+  due_date        DateTime
+  description     String?
+  status          String
+  user_id  Int
+  user           User     @relation(fields: [user_id], references: [user_id])
+}
+
+model SavingsGoal {
+  id Int      @id @default(autoincrement())
+  goal_name       String
+  target_amount   Decimal
+  target_date     DateTime
+  user_id  Int
+  user           User     @relation(fields: [user_id], references: [user_id])
+}
+
 model Realestatefund {
   id                     Int          @id @default(autoincrement())
   company_id             Int
