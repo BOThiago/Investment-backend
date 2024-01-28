@@ -3,16 +3,18 @@ import { Module } from '@nestjs/common';
 import { FiisModule } from './fiis/fiis.module';
 import { CryptoModule } from './crypto/crypto.module';
 import { UsersModule } from './users/users.module';
-import { ImagesModule } from './images/images.module';
-
+import { ConfigModule } from '@nestjs/config';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({isGlobal: true}),
     StocksModule, 
     FiisModule, 
     CryptoModule, 
+    AuthenticationModule,
     UsersModule, 
-    ImagesModule
   ],
 })
+
 export class AppModule {}
