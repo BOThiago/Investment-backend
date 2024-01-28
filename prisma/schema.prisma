@@ -7,10 +7,67 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  debts        Debt[]
+  savingsGoals SavingsGoal[]
+  transactions Transaction[]
+}
+
+model Categories {
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String?
+  transactions Transaction[]
+}
+
+model Transaction {
+  id               Int        @id @default(autoincrement())
+  type             String
+  amount           Decimal
+  transaction_date DateTime
+  description      String?
+  user_id          Int
+  category_id      Int
+  categories       Categories @relation(fields: [category_id], references: [id])
+  user             User       @relation(fields: [user_id], references: [id])
+}
+
+model Debt {
+  id          Int      @id @default(autoincrement())
+  amount      Decimal
+  due_date    DateTime
+  description String?
+  status      String
+  user_id     Int
+  user        User     @relation(fields: [user_id], references: [id])
+}
+
+model SavingsGoal {
+  id            Int      @id @default(autoincrement())
+  goal_name     String
+  target_amount Decimal
+  target_date   DateTime
+  user_id       Int
+  user          User     @relation(fields: [user_id], references: [id])
+}
+
 model Company {
   id      Int              @id @default(autoincrement())
   company String
   fundos  Realestatefund[]
+  Images  Images[]
+}
+
+model Images {
+  id         Int     @id @default(autoincrement())
+  company_id Int
+  cover    String
+  square    String
+  company    Company @relation(fields: [company_id], references: [id])
 }
 
 model Sector {
@@ -34,6 +91,7 @@ model Segment {
   Refhistory Refhistory[]
 }
 
+<<<<<<< HEAD
 model User {
   id    Int      @id @default(autoincrement())
   name            String
@@ -86,15 +144,11 @@ model SavingsGoal {
 model Realestatefund {
   id                     Int          @id @default(autoincrement())
   company_id             Int
-  company                Company      @relation(fields: [company_id], references: [id])
   ticker                 String
   price                  Decimal      @db.Decimal(10, 2)
   sector_id              Int
-  sector                 Sector       @relation(fields: [sector_id], references: [id])
   subsector_id           Int
-  subsector              Subsector    @relation(fields: [subsector_id], references: [id])
   segment_id             Int
-  segment                Segment      @relation(fields: [segment_id], references: [id])
   management             Int
   management_f           String
   dividend_yeld          Decimal      @db.Decimal(6, 4)
@@ -108,21 +162,21 @@ model Realestatefund {
   share_quantity         Decimal      @db.Decimal(10, 2)
   patrimony              Decimal      @db.Decimal(15, 2)
   last_dividend          Decimal      @db.Decimal(10, 2)
+  company                Company      @relation(fields: [company_id], references: [id])
+  sector                 Sector       @relation(fields: [sector_id], references: [id])
+  segment                Segment      @relation(fields: [segment_id], references: [id])
+  subsector              Subsector    @relation(fields: [subsector_id], references: [id])
   Refhistory             Refhistory[]
 }
 
 model Refhistory {
   id                     Int            @id @default(autoincrement())
   realstatefund_id       Int
-  realstatefund          Realestatefund @relation(fields: [realstatefund_id], references: [id])
   ticker                 String
   price                  Decimal        @db.Decimal(10, 2)
   sector_id              Int
-  sector                 Sector         @relation(fields: [sector_id], references: [id])
   subsector_id           Int
-  subsector              Subsector      @relation(fields: [subsector_id], references: [id])
   segment_id             Int
-  segment                Segment        @relation(fields: [segment_id], references: [id])
   management             Int
   management_f           String
   dividend_yeld          Decimal        @db.Decimal(6, 4)
@@ -137,4 +191,8 @@ model Refhistory {
   patrimony              Decimal        @db.Decimal(15, 2)
   last_dividend          Decimal        @db.Decimal(10, 2)
   created_at             DateTime       @default(now())
+  realstatefund          Realestatefund @relation(fields: [realstatefund_id], references: [id])
+  sector                 Sector         @relation(fields: [sector_id], references: [id])
+  segment                Segment        @relation(fields: [segment_id], references: [id])
+  subsector              Subsector      @relation(fields: [subsector_id], references: [id])
 }

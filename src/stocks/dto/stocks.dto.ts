@@ -1,6 +1,6 @@
 export class Stocks {
   companyid: number;
-  companyname: String;
+  companyname: string;
   ticker: string;
   price: number;
   p_l: number;
@@ -32,9 +32,9 @@ export class Stocks {
   segmentid: number;
   sectorid: number;
   subsectorid: number;
-  subsectorname: String;
-  segmentname: String;
-  sectorname: String;
+  subsectorname: string;
+  segmentname: string;
+  sectorname: string;
 }
 
 export class Payout {
