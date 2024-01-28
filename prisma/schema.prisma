@@ -91,7 +91,6 @@ model Segment {
   Refhistory Refhistory[]
 }
 
-<<<<<<< HEAD
 model User {
   id    Int      @id @default(autoincrement())
   name            String
