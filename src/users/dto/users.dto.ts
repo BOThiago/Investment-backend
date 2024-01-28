@@ -1,9 +1,16 @@
-import { IsEmpty, IsOptional, IsString } from "class-validator"
+import { IsEmpty, IsNumber, IsOptional, IsString } from "class-validator"
 
 export class UserDTO {
-  id: string
+  @IsNumber()
+  id: number 
+
+  @IsString()
   name: string
+
+  @IsString()
   email: string
+
+  @IsString()
   password: string
 }
 
@@ -22,6 +29,9 @@ export class CreateUserDTO {
 }
 
 export class UpdateUserDTO {
+  @IsNumber()
+  id: number
+
   @IsOptional()
   @IsString()
   name?: string
