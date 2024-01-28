@@ -65,7 +65,8 @@ model Company {
 model Images {
   id         Int     @id @default(autoincrement())
   company_id Int
-  base_64    String
+  cover    String
+  square    String
   company    Company @relation(fields: [company_id], references: [id])
 }
 
