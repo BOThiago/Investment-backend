@@ -8,13 +8,12 @@ import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}),
-    StocksModule, 
-    FiisModule, 
-    CryptoModule, 
+    ConfigModule.forRoot({ isGlobal: true }),
+    StocksModule,
+    FiisModule,
+    CryptoModule,
     AuthenticationModule,
-    UsersModule, 
+    UsersModule,
   ],
 })
-
 export class AppModule {}

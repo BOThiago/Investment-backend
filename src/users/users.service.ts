@@ -8,45 +8,48 @@ export class UsersService {
   constructor(private authenticationService: AuthenticationService) {}
   async createUser(createUserDTO: CreateUserDTO): Promise<UserDTO> {
     const user = await prisma.user.create({
-      data: createUserDTO
-    })
+      data: createUserDTO,
+    });
 
     const tokenPair = this.authenticationService.generateTokenPair({
       name: user.name,
-      email: user.email
-    })
+      email: user.email,
+    });
 
     const userWithToken: UserDTO = {
       ...user,
       accessToken: tokenPair.accessToken,
-      refreshToken: tokenPair.refreshToken 
-    }
+      refreshToken: tokenPair.refreshToken,
+    };
 
-    return userWithToken
-  }    
+    return userWithToken;
+  }
 
   async findUserById(userId: number): Promise<UserDTO> {
     return await prisma.user.findFirst({
       where: {
-        id: userId
-      }
-    })
+        id: userId,
+      },
+    });
   }
 
-  async updateUser(userId: number, updateUserData: UpdateUserDTO): Promise<UserDTO> {
+  async updateUser(
+    userId: number,
+    updateUserData: UpdateUserDTO,
+  ): Promise<UserDTO> {
     return await prisma.user.update({
       where: {
-        id: userId
+        id: userId,
       },
-      data: updateUserData
-    })
+      data: updateUserData,
+    });
   }
 
   async deleteUser(userId: number): Promise<UserDTO> {
     return await prisma.user.delete({
       where: {
-        id: userId
-      }
-    })
+        id: userId,
+      },
+    });
   }
 }

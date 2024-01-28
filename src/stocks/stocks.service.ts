@@ -22,28 +22,29 @@ export class StocksService {
       .catch((error) => console.log(error));
   }
 
-  async importStocks(){
+  async importStocks() {
     const stocks = await this.getStocks();
     let count = 0;
     for (const stock of stocks) {
-
       const existingStock = await prisma.company.findUnique({
-        where:{
-          id: stock.companyid
-        }
-      })
+        where: {
+          id: stock.companyid,
+        },
+      });
       if (!existingStock) {
         await prisma.company.create({
-          data:{
+          data: {
             id: stock.companyid,
-            company: stock.companyname
-          }
-        })
+            company: stock.companyname,
+          },
+        });
         count++;
-        console.log(`Stock with companyid ${stock.companyid} and name ${stock.companyname} inserted.`);
+        console.log(
+          `Stock with companyid ${stock.companyid} and name ${stock.companyname} inserted.`,
+        );
       }
     }
-    return count + " companies imported"
+    return count + ' companies imported';
   }
 
   async getStock(ticker: string): Promise<Stocks> {
@@ -85,10 +86,10 @@ export class StocksService {
       .catch((error) => console.log(error));
   }
 
-  async getStocksGraham(): Promise<Object> {
+  async getStocksGraham(): Promise<object> {
     const response = await this.getStocks();
 
-    let valoresIntrinsecos = response
+    const valoresIntrinsecos = response
       .map((stocks) => {
         if (
           stocks.price == 0 ||
@@ -117,7 +118,7 @@ export class StocksService {
     return valoresIntrinsecos.sort((a, b) => b.upsideGraham - a.upsideGraham);
   }
 
-  async getStocksBazin(ticker: string): Promise<Object> {
+  async getStocksBazin(ticker: string): Promise<object> {
     const dividend = await this.getStockDividend(ticker);
 
     const assetEarningsYearlyModels = dividend.assetEarningsYearlyModels;

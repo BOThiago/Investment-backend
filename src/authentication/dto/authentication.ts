@@ -1,10 +1,9 @@
-
 export class TokenPair {
-  accessToken: string
-  refreshToken: string
+  accessToken: string;
+  refreshToken: string;
 }
 
 export class GenerateTokenDTO {
-  name: string
-  email: string
+  name: string;
+  email: string;
 }

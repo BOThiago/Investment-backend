@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { StocksService } from './stocks.service';
 
 @Controller({ path: 'stocks' })
