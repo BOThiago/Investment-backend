@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { Stocks, Payout, Dividend } from './dto/stocks.dto';
+import { Stocks, Dividend } from './dto/stocks.dto';
+import { prisma } from 'prisma/client';
 
 @Injectable()
 export class StocksService {
@@ -19,6 +20,30 @@ export class StocksService {
       .request(config)
       .then((response) => response.data.list)
       .catch((error) => console.log(error));
+  }
+
+  async importStocks(){
+    const stocks = await this.getStocks();
+    let count = 0;
+    for (const stock of stocks) {
+
+      const existingStock = await prisma.company.findUnique({
+        where:{
+          id: stock.companyid
+        }
+      })
+      if (!existingStock) {
+        await prisma.company.create({
+          data:{
+            id: stock.companyid,
+            company: stock.companyname
+          }
+        })
+        count++;
+        console.log(`Stock with companyid ${stock.companyid} and name ${stock.companyname} inserted.`);
+      }
+    }
+    return count + " companies imported"
   }
 
   async getStock(ticker: string): Promise<Stocks> {
