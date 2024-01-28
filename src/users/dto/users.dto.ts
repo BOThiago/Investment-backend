@@ -29,9 +29,6 @@ export class CreateUserDTO {
 }
 
 export class UpdateUserDTO {
-  @IsNumber()
-  id: number
-
   @IsOptional()
   @IsString()
   name?: string
