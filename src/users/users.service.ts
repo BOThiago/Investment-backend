@@ -18,12 +18,12 @@ export class UsersService {
     })
   }
 
-  async updateUser(updateUserDTO: UpdateUserDTO): Promise<UserDTO> {
+  async updateUser(userId: number, updateUserData: UpdateUserDTO): Promise<UserDTO> {
     return await prisma.user.update({
       where: {
-        id: updateUserDTO.id
+        id: userId
       },
-      data: updateUserDTO
+      data: updateUserData
     })
   }
 

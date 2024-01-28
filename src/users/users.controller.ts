@@ -6,9 +6,9 @@ import { CreateUserDTO, UpdateUserDTO } from './dto/users.dto';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Post('')
-  async createUser(@Body() createUserDTO: CreateUserDTO) {
-    return await this.usersService.createUser(createUserDTO);
+  @Post()
+  async createUser(@Body() createUserData: CreateUserDTO) {
+    return await this.usersService.createUser(createUserData);
   }
 
   @Get(':id')
@@ -16,9 +16,9 @@ export class UsersController {
     return await this.usersService.findUserById(Number(id));
   }
 
-  @Patch('')
-  async updateUser(@Body() updateUserDTO: UpdateUserDTO) {
-    return await this.usersService.updateUser(updateUserDTO);
+  @Patch(':id')
+  async updateUser(@Param("id") id: string, @Body() updateUserData: UpdateUserDTO) {
+    return await this.usersService.updateUser(Number(id), updateUserData);
   }
 
   @Delete(':id')

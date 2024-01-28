@@ -11,6 +11,8 @@ import { PrismaService } from './database/prisma.service';
 import { FiisService } from './fiis/fiis.service';
 import { FiisController } from './fiis/fiis.controller';
 import { StocksService } from './stocks/stocks.service';
+import { UsersController } from './users/users.controller';
+import { UsersService } from './users/users.service';
 @Module({
   imports: [StocksModule, FiisModule, CryptoModule],
   controllers: [
@@ -18,6 +20,7 @@ import { StocksService } from './stocks/stocks.service';
     FiisController,
     CryptoController,
     AppController,
+    UsersController,
   ],
   providers: [
     AppService,
@@ -25,6 +28,7 @@ import { StocksService } from './stocks/stocks.service';
     FiisService,
     StocksService,
     CryptoService,
+    UsersService
   ],
 })
 export class AppModule {}
