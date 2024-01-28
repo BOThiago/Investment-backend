@@ -58,9 +58,9 @@ model Transaction {
   transaction_date DateTime
   description     String?
   user_id  Int
-  user            User     @relation(fields: [user_id], references: [user_id])
+  user            User     @relation(fields: [user_id], references: [id])
   category_id  Int
-  categories        Categories  @relation(fields: [category_id], references: [category_id])
+  categories        Categories  @relation(fields: [category_id], references: [id])
 }
 
 model Debt {
@@ -70,7 +70,7 @@ model Debt {
   description     String?
   status          String
   user_id  Int
-  user           User     @relation(fields: [user_id], references: [user_id])
+  user           User     @relation(fields: [user_id], references: [id])
 }
 
 model SavingsGoal {
@@ -79,7 +79,7 @@ model SavingsGoal {
   target_amount   Decimal
   target_date     DateTime
   user_id  Int
-  user           User     @relation(fields: [user_id], references: [user_id])
+  user           User     @relation(fields: [user_id], references: [id])
 }
 
 model Realestatefund {
