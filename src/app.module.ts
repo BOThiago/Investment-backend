@@ -13,14 +13,19 @@ import { FiisController } from './fiis/fiis.controller';
 import { StocksService } from './stocks/stocks.service';
 import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
+import { ConfigModule } from '@nestjs/config';
+import { AuthenticationService } from './authentication/authentication.service';
+import { AuthenticationController } from './authentication/authentication.controller';
+
 @Module({
-  imports: [StocksModule, FiisModule, CryptoModule],
+  imports: [ConfigModule.forRoot(), StocksModule, FiisModule, CryptoModule],
   controllers: [
     StocksController,
     FiisController,
     CryptoController,
     AppController,
     UsersController,
+    AuthenticationController
   ],
   providers: [
     AppService,
@@ -28,7 +33,8 @@ import { UsersService } from './users/users.service';
     FiisService,
     StocksService,
     CryptoService,
-    UsersService
+    UsersService,
+    AuthenticationService,
   ],
 })
 export class AppModule {}

@@ -39,6 +39,7 @@ model User {
   name            String
   email           String   @unique
   password        String
+  refresh_token   String
   transactions    Transaction[]
   debts           Debt[]
   savingsGoals    SavingsGoal[]
