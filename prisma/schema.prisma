@@ -58,16 +58,9 @@ model SavingsGoal {
 model Company {
   id      Int              @id @default(autoincrement())
   company String
-  fundos  Realestatefund[]
-  Images  Images[]
-}
-
-model Images {
-  id         Int     @id @default(autoincrement())
-  company_id Int
   cover    String
   square    String
-  company    Company @relation(fields: [company_id], references: [id])
+  fundos  Realestatefund[]
 }
 
 model Sector {
