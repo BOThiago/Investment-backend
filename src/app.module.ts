@@ -11,19 +11,13 @@ import { PrismaService } from './database/prisma.service';
 import { FiisService } from './fiis/fiis.service';
 import { FiisController } from './fiis/fiis.controller';
 import { StocksService } from './stocks/stocks.service';
-import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
-import { GoogleStrategy } from './auth/google.strategy';
-import { AuthModule } from './auth/auth.module';
-
 @Module({
-  imports: [StocksModule, FiisModule, CryptoModule, AuthModule],
+  imports: [StocksModule, FiisModule, CryptoModule],
   controllers: [
     StocksController,
     FiisController,
     CryptoController,
     AppController,
-    AuthController,
   ],
   providers: [
     AppService,
@@ -31,8 +25,6 @@ import { AuthModule } from './auth/auth.module';
     FiisService,
     StocksService,
     CryptoService,
-    AuthService,
-    GoogleStrategy,
   ],
 })
 export class AppModule {}
