@@ -10,6 +10,11 @@ export class StocksController {
     return await this.stocksService.getStocks();
   }
 
+  @Get('import')
+  async importStocks() {
+    return await this.stocksService.importStocks();
+  }
+
   @Get('stock')
   async getStocksByTicker(@Query('ticker') ticker: string) {
     return await this.stocksService.getStock(ticker);
