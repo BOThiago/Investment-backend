@@ -37,8 +37,6 @@ export class AuthenticationService {
         throw new Error(err.message);
       }
 
-      console.log(payload)
-
       jwtPayload = payload as TokenPayloadDTO
     });
 
