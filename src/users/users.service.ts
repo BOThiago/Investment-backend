@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDTO, UpdateUserDTO, UserDTO } from './dto/users.dto';
 import { prisma } from 'prisma/client';
 import { AuthenticationService } from 'src/authentication/authentication.service';
@@ -33,6 +33,14 @@ export class UsersService {
     });
   }
 
+  async findUserByEmail(email: string): Promise<UserDTO> {
+      return await prisma.user.findUnique({
+          where: {
+              email
+          }
+      })
+  }
+
   async updateUser(
     userId: number,
     updateUserData: UpdateUserDTO,
@@ -51,5 +59,21 @@ export class UsersService {
         id: userId,
       },
     });
+  }
+
+  async signIn(email: string, password: string): Promise<UserDTO> {
+    const user = await this.findUserByEmail(email)  
+
+    if (user.password !== password) {
+        throw new UnauthorizedException()
+    }
+
+    const tokenPair = this.authenticationService.generateTokenPair({name: user.name, email: user.email})
+
+    return {
+        ...user,
+        accessToken: tokenPair.accessToken,
+        refreshToken: tokenPair.refreshToken,
+    }
   }
 }

@@ -13,8 +13,8 @@ import { ImagesModule } from './images/images.module';
     StocksModule,
     FiisModule,
     CryptoModule,
-    AuthenticationModule,
     UsersModule,
+    AuthenticationModule,
     ImagesModule,
   ],
 })
