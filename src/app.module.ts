@@ -5,6 +5,7 @@ import { CryptoModule } from './crypto/crypto.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     CryptoModule,
     AuthenticationModule,
     UsersModule,
+    ImagesModule,
   ],
 })
 export class AppModule {}

@@ -13,7 +13,7 @@ export class StocksController {
   @Get('import')
   async importStocks() {
     this.stocksService.importStocks();
-    return "Importing"
+    return { message: 'Job de Importação de Ações inciado !' };
   }
 
   @Get('stock')

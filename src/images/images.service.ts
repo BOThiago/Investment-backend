@@ -4,22 +4,22 @@ import { prisma } from 'prisma/client';
 
 @Injectable()
 export class ImagesService {
-
   async getImages(company_id: number) {
-      const square = await this.getImageSquare(company_id);
-      const cover = await this.getImageCover(company_id);
-      return {square,cover}
+    const square = await this.getImageSquare(company_id);
+    const cover = await this.getImageCover(company_id);
+    return { square, cover };
   }
 
   async getImageSquare(companyid: number) {
     const existImage = await prisma.company.findUnique({
-      where:{
-        id: companyid
-      }
-    })
+      where: {
+        id: companyid,
+      },
+    });
 
-    if(existImage.square) {
-      return existImage.square}
+    if (existImage?.square) {
+      return existImage.square;
+    }
 
     const config: AxiosRequestConfig = {
       method: 'get',
@@ -39,13 +39,12 @@ export class ImagesService {
 
   async getImageCover(companyid: number) {
     const existImage = await prisma.company.findUnique({
-      where:{
-        id: companyid
-      }
-    })
+      where: {
+        id: companyid,
+      },
+    });
 
-    if(existImage.cover) 
-      return existImage.cover
+    if (existImage?.cover) return existImage.cover;
 
     const config: AxiosRequestConfig = {
       method: 'get',

@@ -35,21 +35,24 @@ export class StocksService {
         },
       });
       if (!existingStock) {
-        const {square,cover} = await this.imagesService.getImages(stock.companyid);
+        const { square, cover } = await this.imagesService.getImages(
+          stock.companyid,
+        );
         await prisma.company.create({
           data: {
             id: stock.companyid,
             company: stock.companyname,
             square,
             cover,
-          }
-        })
+          },
+        });
         count++;
         console.log(
           `Stock with companyid ${stock.companyid} and name ${stock.companyname} inserted.`,
         );
       }
     }
+    console.log(`Finaly ! Stocks imported: ${count}`);
   }
 
   async getStock(ticker: string): Promise<Stocks> {
