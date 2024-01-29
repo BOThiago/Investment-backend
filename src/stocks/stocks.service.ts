@@ -2,9 +2,12 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Stocks, Dividend } from './dto/stocks.dto';
 import { prisma } from 'prisma/client';
+import { ImagesService } from 'src/images/images.service';
 
 @Injectable()
 export class StocksService {
+  constructor(private readonly imagesService: ImagesService) {}
+
   async getStocks(): Promise<Stocks[]> {
     const config = {
       method: 'get',
@@ -32,19 +35,21 @@ export class StocksService {
         },
       });
       if (!existingStock) {
+        const {square,cover} = await this.imagesService.getImages(stock.companyid);
         await prisma.company.create({
           data: {
             id: stock.companyid,
             company: stock.companyname,
-          },
-        });
+            square,
+            cover,
+          }
+        })
         count++;
         console.log(
           `Stock with companyid ${stock.companyid} and name ${stock.companyname} inserted.`,
         );
       }
     }
-    return count + ' companies imported';
   }
 
   async getStock(ticker: string): Promise<Stocks> {

@@ -58,16 +58,9 @@ model SavingsGoal {
 model Company {
   id      Int              @id @default(autoincrement())
   company String
-  fundos  Realestatefund[]
-  Images  Images[]
-}
-
-model Images {
-  id         Int     @id @default(autoincrement())
-  company_id Int
   cover    String
   square    String
-  company    Company @relation(fields: [company_id], references: [id])
+  fundos  Realestatefund[]
 }
 
 model Sector {
@@ -89,55 +82,6 @@ model Segment {
   segment    String
   fundos     Realestatefund[]
   Refhistory Refhistory[]
-}
-
-model User {
-  id    Int      @id @default(autoincrement())
-  name            String
-  email           String   @unique
-  password        String
-  refresh_token   String
-  transactions    Transaction[]
-  debts           Debt[]
-  savingsGoals    SavingsGoal[]
-}
-
-model Categories {
-  id Int      @id @default(autoincrement())
-  name            String
-  description     String?
-  transactions    Transaction[]
-}
-
-model Transaction {
-  id Int      @id @default(autoincrement())
-  type            String
-  amount          Decimal
-  transaction_date DateTime
-  description     String?
-  user_id  Int
-  user            User     @relation(fields: [user_id], references: [id])
-  category_id  Int
-  categories        Categories  @relation(fields: [category_id], references: [id])
-}
-
-model Debt {
-  id Int      @id @default(autoincrement())
-  amount          Decimal
-  due_date        DateTime
-  description     String?
-  status          String
-  user_id  Int
-  user           User     @relation(fields: [user_id], references: [id])
-}
-
-model SavingsGoal {
-  id Int      @id @default(autoincrement())
-  goal_name       String
-  target_amount   Decimal
-  target_date     DateTime
-  user_id  Int
-  user           User     @relation(fields: [user_id], references: [id])
 }
 
 model Realestatefund {

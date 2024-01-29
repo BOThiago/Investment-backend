@@ -12,7 +12,8 @@ export class StocksController {
 
   @Get('import')
   async importStocks() {
-    return await this.stocksService.importStocks();
+    this.stocksService.importStocks();
+    return "Importing"
   }
 
   @Get('stock')
