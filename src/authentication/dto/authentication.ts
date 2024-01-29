@@ -4,11 +4,6 @@ export class TokenPair {
 }
 
 export class TokenPayloadDTO {
-    email: string
-    name: string
-}
-
-export class GenerateTokenDTO {
   name: string;
   email: string;
 }
