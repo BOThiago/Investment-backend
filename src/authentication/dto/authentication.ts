@@ -3,7 +3,7 @@ export class TokenPair {
   refreshToken: string;
 }
 
-export class GenerateTokenDTO {
+export class TokenPayloadDTO {
   name: string;
   email: string;
 }

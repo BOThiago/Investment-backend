@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { GenerateTokenDTO, TokenPair } from './dto/authentication';
+import { TokenPair, TokenPayloadDTO } from './dto/authentication';
 import { sign, verify } from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 
@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 export class AuthenticationService {
   constructor(private configService: ConfigService) {}
 
-  generateTokenPair(generateTokenData: GenerateTokenDTO): TokenPair {
+  generateTokenPair(generateTokenData: TokenPayloadDTO): TokenPair {
     const refreshToken = sign(
       {
         data: generateTokenData,
@@ -30,11 +30,16 @@ export class AuthenticationService {
     };
   }
 
-  authenticate(accessToken: string) {
-    verify(accessToken, this.configService.get('JWT_SECRET'), (err) => {
+  verifySync(accessToken: string) {
+    let jwtPayload: TokenPayloadDTO 
+    verify(accessToken, this.configService.get('JWT_SECRET'), (err, payload) => {
       if (err) {
         throw new Error(err.message);
       }
+
+      jwtPayload = payload as TokenPayloadDTO
     });
+
+    return jwtPayload
   }
 }
