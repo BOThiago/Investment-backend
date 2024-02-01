@@ -85,13 +85,24 @@ export class CryptoService {
     const maxPrice = Math.max(...closingPrices);
     const minPrice = Math.min(...closingPrices);
 
-    // Calcular níveis de Fibonacci (exemplo usando 38.2%, 50% e 61.8%)
-    const fibonacciLevels = closingPrices.map((price: number) => ({
-      price,
-      fib38: price * 0.382,
-      fib50: price * 0.5,
-      fib61: price * 0.618,
-    }));
+    const fibonacciLevels = priceHistory.map((item) => {
+      const weeklyMin = parseFloat(item[3]);
+      const weeklyMax = parseFloat(item[2]);
+
+      const range = weeklyMax - weeklyMin;
+      const fib38 = weeklyMin + range * 0.382;
+      const fib50 = weeklyMin + range * 0.5;
+      const fib61 = weeklyMin + range * 0.618;
+
+      return {
+        price: parseFloat(item[4]),
+        minPrice: weeklyMin,
+        maxPrice: weeklyMax,
+        fib38,
+        fib50,
+        fib61,
+      };
+    });
 
     return { symbol, maxPrice, minPrice, fibonacciLevels };
   }
@@ -99,13 +110,10 @@ export class CryptoService {
   async calculateCVDBySymbol(symbol: string): Promise<any> {
     const priceHistory = await this.getSymbolPriceHistory(symbol);
 
-    console.log(priceHistory);
-
     const closingPrices = priceHistory.map((item) => parseFloat(item[4]));
 
     const volumes = priceHistory.map((item) => parseFloat(item[8]));
 
-    // Calcular o CVD (Cumulative Volume Delta)
     const cvd = volumes.reduce((acc, volume, index) => {
       const delta =
         index === 0 ? 0 : closingPrices[index] - closingPrices[index - 1];
