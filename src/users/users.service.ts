@@ -34,11 +34,11 @@ export class UsersService {
   }
 
   async findUserByEmail(email: string): Promise<UserDTO> {
-      return await prisma.user.findUnique({
-          where: {
-              email
-          }
-      })
+    return await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
   }
 
   async updateUser(
@@ -62,18 +62,21 @@ export class UsersService {
   }
 
   async signIn(email: string, password: string): Promise<UserDTO> {
-    const user = await this.findUserByEmail(email)  
+    const user = await this.findUserByEmail(email);
 
     if (user.password !== password) {
-        throw new UnauthorizedException()
+      throw new UnauthorizedException();
     }
 
-    const tokenPair = this.authenticationService.generateTokenPair({name: user.name, email: user.email})
+    const tokenPair = this.authenticationService.generateTokenPair({
+      name: user.name,
+      email: user.email,
+    });
 
     return {
-        ...user,
-        accessToken: tokenPair.accessToken,
-        refreshToken: tokenPair.refreshToken,
-    }
+      ...user,
+      accessToken: tokenPair.accessToken,
+      refreshToken: tokenPair.refreshToken,
+    };
   }
 }

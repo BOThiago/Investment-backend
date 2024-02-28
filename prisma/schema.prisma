@@ -11,7 +11,8 @@ model User {
   id           Int           @id @default(autoincrement())
   name         String
   email        String        @unique
-  password     String
+  password     String?
+  picture      String?
   debts        Debt[]
   savingsGoals SavingsGoal[]
   transactions Transaction[]
@@ -58,8 +59,8 @@ model SavingsGoal {
 model Company {
   id      Int              @id @default(autoincrement())
   company String
-  cover    String
-  square    String
+  cover   String
+  square  String
   fundos  Realestatefund[]
 }
 
