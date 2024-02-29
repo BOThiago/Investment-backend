@@ -1,25 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { prisma } from 'prisma/client';
 
 @Injectable()
 export class ImagesService {
-  async getImages(company_id: number) {
-    const square = await this.getImageSquare(company_id);
-    const cover = await this.getImageCover(company_id);
-    return { square, cover };
-  }
-
   async getImageSquare(companyid: number) {
+    if (!companyid) return;
+
     const existImage = await prisma.company.findUnique({
       where: {
         id: companyid,
       },
     });
 
-    if (existImage?.square) {
-      return existImage.square;
-    }
+    if (existImage?.square) return existImage.square;
 
     const config: AxiosRequestConfig = {
       method: 'get',
@@ -33,11 +27,12 @@ export class ImagesService {
     };
     const response: AxiosResponse<ArrayBuffer> = await axios(config);
     const imageBufferCover = Buffer.from(response.data);
-    const base64String = imageBufferCover.toString('base64');
-    return base64String;
+    return imageBufferCover.toString('base64');
   }
 
   async getImageCover(companyid: number) {
+    if (!companyid) return;
+
     const existImage = await prisma.company.findUnique({
       where: {
         id: companyid,
@@ -58,7 +53,21 @@ export class ImagesService {
     };
     const response: AxiosResponse<ArrayBuffer> = await axios(config);
     const imageBufferCover = Buffer.from(response.data);
-    const base64String = imageBufferCover.toString('base64');
-    return base64String;
+    return imageBufferCover.toString('base64');
+  }
+
+  async getImages(companyId: number) {
+    try {
+      const [cover, square] = await Promise.all([
+        this.getImageCover(companyId),
+        this.getImageSquare(companyId),
+      ]);
+      return { cover, square };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Não foi possível encontrar as imagens do ativo !',
+        error,
+      );
+    }
   }
 }
