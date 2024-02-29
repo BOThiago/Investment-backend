@@ -24,4 +24,10 @@ export class CryptoController {
   async calculateCVDBySymbol(@Query('symbol') symbol: string) {
     return await this.cryptoService.calculateCVDBySymbol(symbol);
   }
+
+  @Get('today')
+  async getCryptoData() {
+    const { topGainers, topLosers } = await this.cryptoService.topCryptos();
+    return { topGainers, topLosers };
+  }
 }

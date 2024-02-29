@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+
+interface CryptoData {
+  symbol: string;
+  priceChangePercent: string;
+  companyId: string;
+}
 
 @Injectable()
 export class CryptoService {
@@ -121,5 +127,53 @@ export class CryptoService {
     }, 0);
 
     return { symbol, cvd };
+  }
+
+  async getTopGainers(response: AxiosResponse): Promise<string[]> {
+    const sortedData = response.data
+      .filter((crypto: CryptoData) => parseFloat(crypto.priceChangePercent) > 0)
+      .sort(
+        (a, b) =>
+          parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent),
+      )
+      .slice(0, 5);
+
+    return sortedData.map((crypto: CryptoData) => ({
+      code: crypto.symbol,
+      resultPercentageValue: crypto.priceChangePercent,
+      companyId: crypto.companyId,
+    }));
+  }
+
+  async getTopLosers(response: AxiosResponse): Promise<string[]> {
+    const sortedData = response.data
+      .filter((crypto: CryptoData) => parseFloat(crypto.priceChangePercent) < 0)
+      .sort(
+        (a, b) =>
+          parseFloat(a.priceChangePercent) - parseFloat(b.priceChangePercent),
+      )
+      .slice(0, 5);
+
+    return sortedData.map((crypto: CryptoData) => ({
+      code: crypto.symbol,
+      resultPercentageValue: crypto.priceChangePercent,
+      companyId: crypto.companyId,
+    }));
+  }
+
+  async topCryptos() {
+    try {
+      const response: AxiosResponse = await axios.get('/ticker/24hr', {
+        baseURL: this.apiUrl,
+      });
+      const [topGainers, topLosers] = await Promise.all([
+        this.getTopGainers(response),
+        this.getTopLosers(response),
+      ]);
+      return { topGainers, topLosers };
+    } catch (error) {
+      console.error('Erro ao obter dados:', error);
+      throw error;
+    }
   }
 }
