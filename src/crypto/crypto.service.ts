@@ -131,7 +131,11 @@ export class CryptoService {
 
   async getTopGainers(response: AxiosResponse): Promise<string[]> {
     const sortedData = response.data
-      .filter((crypto: CryptoData) => parseFloat(crypto.priceChangePercent) > 0)
+      .filter(
+        (crypto: CryptoData) =>
+          parseFloat(crypto.priceChangePercent) > 0 &&
+          crypto.symbol.endsWith('USDT'),
+      )
       .sort(
         (a, b) =>
           parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent),
@@ -147,7 +151,11 @@ export class CryptoService {
 
   async getTopLosers(response: AxiosResponse): Promise<string[]> {
     const sortedData = response.data
-      .filter((crypto: CryptoData) => parseFloat(crypto.priceChangePercent) < 0)
+      .filter(
+        (crypto: CryptoData) =>
+          parseFloat(crypto.priceChangePercent) < 0 &&
+          crypto.symbol.endsWith('USDT'),
+      )
       .sort(
         (a, b) =>
           parseFloat(a.priceChangePercent) - parseFloat(b.priceChangePercent),
